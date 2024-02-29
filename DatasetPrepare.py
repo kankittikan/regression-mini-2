@@ -15,26 +15,24 @@ def readDataset():
 def datasetPrepare(df):
     # เรียงข้อมูลโดยเรียงจากวันที่น้อยไปวันที่มาก
     df['Date'] = pd.to_datetime(df['Date'], dayfirst=True)
-    df = df.set_index('Date')
-    df = df.sort_index()
     # ทำการแปลงข้อมูลให้เป็น numeric และแทนที่ค่าที่เป็นช่องว่าง
     df = df.replace(" ", "")
     df[['Fuji', 'Envi', 'Gala']] = df[['Fuji', 'Envi', 'Gala']].apply(pd.to_numeric)
-    df = df.interpolate()
+    df[['Fuji', 'Envi', 'Gala']] = df[['Fuji', 'Envi', 'Gala']].interpolate()
 
     return df
 
 def getGalaDatasets():
     df = readDataset()
     df = datasetPrepare(df)
-    return df['Gala']
+    return df[['Date', 'Gala']]
 
 def getEnviDatasets():
     df = readDataset()
     df = datasetPrepare(df)
-    return df['Envi']
+    return df[['Date', 'Envi']]
 
 def getFujiDatasets():
     df = readDataset()
     df = datasetPrepare(df)
-    return df['Fuji']
+    return df[['Date', 'Fuji']]
